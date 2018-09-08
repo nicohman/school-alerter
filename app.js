@@ -1,11 +1,13 @@
-var schedules = require(__dirname+"/schedules/cedarcrest.json");
+var conf = require(__dirname+"/config.json");
+var schedules = require(__dirname+"/schedules/"+conf.sched+".json");
 var moment = require("moment");
 var FeedParser = require('feedparser');
 var request = require('request');
-var conf = require(__dirname+"/config.json");
 const accountSid = conf.acs;
 const authToken = conf.at;
+const name = conf.name;
 const client = require('twilio')(accountSid, authToken);
+const from = conf.from;
 function check (calender) {
 	var now = moment();
 	var req = request(calender);
@@ -19,7 +21,6 @@ function check (calender) {
 			stream.pipe(feedparser);
 		}
 	});
-
 	var todays = [];
 	feedparser.on('readable', function () {
 		var stream = this;
@@ -34,7 +35,6 @@ function check (calender) {
 		}
 	});
 	feedparser.on("end", function(){
-
 		checkAll(todays);
 	});
 }
@@ -51,14 +51,14 @@ function notify(day) {
 	console.log("However, today is a "+day.pname);
 	conf.numbers.forEach(function(n){
 		console.log("Sending to "+n);
-	client.messages
-		.create({
-			body: 'Today is a '+day.pname+". Nico needs to be at school by "+day.arrival,
-			from: '+12064721023',
-			to: n
-		})
-		.then(message => console.log(message.sid))
-		.done();
+		client.messages
+			.create({
+				body: 'Today is a '+day.pname+". "+name+" needs to be at school by "+day.arrival,
+				from: from,
+				to: n
+			})
+			.then(message => console.log(message.sid))
+			.done();
 	});
 }
 function checkAll(todays) {
@@ -90,7 +90,6 @@ function checkEvent (item) {
 		for(var y=0; y< to.names.length;y++){
 			var name = to.names[y];
 			if (item.title.toLowerCase().indexOf(name.toLowerCase()) != -1) {
-				console.log("Found day!");
 				tday = to;
 				y = 100;
 				i = 100;
@@ -100,15 +99,12 @@ function checkEvent (item) {
 	return tday;
 }
 var day = moment().day();
-console.log(day);
 if(day !== 0 && day !== 6){
 	check(schedules.url);
 } else {
 	if (day == 0) {
 		console.log("Today is Sunday");
 	} else {
-	
-	
 		console.log("Today is Saturday");
 	}
 }
