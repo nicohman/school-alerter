@@ -1,0 +1,48 @@
+{
+	"days":{
+		"monfri":{
+			"pname":"6 Period",
+			"arrival":"10:45",
+			"names":["6 Period"],
+			"priority":0
+		},
+		"block":{
+			"pname":"Block",
+			"arrival":"11:00",
+			"names":["Block"],
+			"priority":0
+		},
+		"pep":{
+			"pname":"Pep Assembly",
+			"arrival":"10:30",
+			"names":["Pep Assembly"],
+			"priority":0
+		},
+		"pep-er":{
+			"pname":"Early Release Pep Assembly",
+			"arrival":"10:26",
+			"names":["Pep Assembly Schedule Early Release"],
+			"priority":1
+		},
+		"er-lunch":{
+			"pname":"Early Release",
+			"arrival":"9:59",
+			"names":["Early Release"],
+			"priority":0
+		},
+		"er":{
+			"pname":"1/2 Day",
+			"arrival":"9:55",
+			"names":["1/2 Day - Early Release Without Lunch"],
+			"priority":1
+		},
+		"no":{
+			"pname":"No School",
+			"arrival":"N/A",
+			"names":["No School"],
+			"priority":1
+		}
+	},
+	"default":["monfri","block","block","block","er-lunch"],
+	"url":"https://www.trumba.com/calendars/cedarcrest-high-school.rss"
+}

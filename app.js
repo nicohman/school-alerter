@@ -89,7 +89,7 @@ function checkEvent (item) {
 		var to = schedules.days[day];
 		for(var y=0; y< to.names.length;y++){
 			var name = to.names[y];
-			if (item.title.indexOf(name) != -1) {
+			if (item.title.toLowerCase().indexOf(name.toLowerCase()) != -1) {
 				console.log("Found day!");
 				tday = to;
 				y = 100;

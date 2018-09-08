@@ -1,0 +1,9 @@
+{
+	"name": "school-alerter",
+	"dependencies": {
+		"feedparser": "^2.2.9",
+		"moment": "^2.22.2",
+		"request": "^2.88.0",
+		"twilio": "^3.19.2"
+	}
+}
