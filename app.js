@@ -1,8 +1,8 @@
-var schedules = require("./schedules/cedarcrest.json");
+var schedules = require(__dirname+"/schedules/cedarcrest.json");
 var moment = require("moment");
 var FeedParser = require('feedparser');
 var request = require('request');
-var conf = require("./config.json");
+var conf = require(__dirname+"/config.json");
 const accountSid = conf.acs;
 const authToken = conf.at;
 const client = require('twilio')(accountSid, authToken);
@@ -99,9 +99,16 @@ function checkEvent (item) {
 	}
 	return tday;
 }
-var day = moment().day;
+var day = moment().day();
+console.log(day);
 if(day !== 0 && day !== 6){
 	check(schedules.url);
 } else {
-	console.log("Today is a Saturday or Sunday");
+	if (day == 0) {
+		console.log("Today is Sunday");
+	} else {
+	
+	
+		console.log("Today is Saturday");
+	}
 }
