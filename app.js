@@ -1,19 +1,17 @@
 var schedules = require("./schedules/cedarcrest.json");
 var moment = require("moment");
 var FeedParser = require('feedparser');
-var request = require('request'); // for fetching the feed
+var request = require('request');
+var conf = require("./config.json");
+const accountSid = conf.acs;
+const authToken = conf.at;
+const client = require('twilio')(accountSid, authToken);
 function check (calender) {
 	var now = moment();
 	var req = request(calender);
 	var feedparser = new FeedParser();
-
-	req.on('error', function (error) {
-		// handle any request errors
-	});
-
 	req.on('response', function (res) {
-		var stream = this; // `this` is `req`, which is a stream
-
+		var stream = this;
 		if (res.statusCode !== 200) {
 			this.emit('error', new Error('Bad status code'));
 		}
@@ -22,14 +20,10 @@ function check (calender) {
 		}
 	});
 
-	feedparser.on('error', function (error) {
-		// always handle errors
-	});
 	var todays = [];
 	feedparser.on('readable', function () {
-		// This is where the action is!
-		var stream = this; // `this` is `feedparser`, which is a stream
-		var meta = this.meta; // **NOTE** the "meta" is always available in the context of the feedparser instance
+		var stream = this;
+		var meta = this.meta;
 		var item;
 		while (item = stream.read()) {
 			var da = item.categories[0];
@@ -40,7 +34,7 @@ function check (calender) {
 		}
 	});
 	feedparser.on("end", function(){
-		
+
 		checkAll(todays);
 	});
 }
@@ -55,6 +49,17 @@ function ssort(a, b) {
 }
 function notify(day) {
 	console.log("However, today is a "+day.pname);
+	conf.numbers.forEach(function(n){
+		console.log("Sending to "+n);
+	client.messages
+		.create({
+			body: 'Today is a '+day.pname+". Nico needs to be at school by "+day.arrival,
+			from: '+12064721023',
+			to: n
+		})
+		.then(message => console.log(message.sid))
+		.done();
+	});
 }
 function checkAll(todays) {
 	var done = false;
@@ -94,4 +99,9 @@ function checkEvent (item) {
 	}
 	return tday;
 }
-check(schedules.url);
+var day = moment().day;
+if(day !== 0 && day !== 6){
+	check(schedules.url);
+} else {
+	console.log("Today is a Saturday or Sunday");
+}
