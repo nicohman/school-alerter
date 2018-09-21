@@ -1,5 +1,16 @@
 {
 	"name": "school-alerter",
+    "private": true,
+    "version": "1.0.0",
+    "description": "A NodeJS program to automatically text me when I have to be at my school today.",
+    "author": {
+        "name": "Nico Hickman",
+        "email": "nico.hickman@gmail.com"
+    },
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
 	"dependencies": {
 		"feedparser": "^2.2.9",
 		"moment": "^2.22.2",
