@@ -1,0 +1,35 @@
+{
+    "family": "ecs-school-alerter",
+    "containerDefinitions": [{
+        "name": "school-alerter",
+        "memory": 384,
+        "cpu": 32,
+        "environment": [
+            {
+                "name": "APP_ENV",
+                "value": "production"
+            },
+            {
+                "name": "S3_BUCKET",
+                "value": "nicohman"
+            }
+        ],
+        "essential": true,
+        "entryPoint": [],
+        "links": [],
+        "volumesFrom": [],
+        "command": [],
+        "mountPoints": [{
+            "sourceVolume": "school-alerter-logs",
+            "readOnly": false,
+            "containerPath": "/var/log/school-alerter"
+        }],
+        "image": "__IMAGE__"
+    }],
+    "volumes": [{
+        "host": {
+            "sourcePath": "/var/log/school-alerter"
+        },
+        "name": "school-alerter-logs"
+    }]
+}
