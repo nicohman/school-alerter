@@ -3,8 +3,6 @@
 REPOSITORY_URI="550879144543.dkr.ecr.us-west-2.amazonaws.com"
 REPO="school-alerter"
 
-CLUSTER_NAME="ecs-cluster"
-TASK_DEFINITION_NAME="ecs-$REPO"
 ECS_TASK_JSON="ecs-task.json"
 
 die() {
@@ -24,15 +22,15 @@ fi
 
 # Verify changes have been committed
 gitCommitStatus=$(git status --porcelain)
-#if [ "$gitCommitStatus" != "" ]; then
-#    die "You have uncommitted files."
-#fi
+if [ "$gitCommitStatus" != "" ]; then
+    die "You have uncommitted files."
+fi
 
 # Verify commits have been pushed to remote
 gitPushStatus=$(git cherry -v)
-#if [ "$gitPushStatus" != "" ]; then
-#    die "You have local commits that were NOT pushed."
-#fi
+if [ "$gitPushStatus" != "" ]; then
+    die "You have local commits that were NOT pushed."
+fi
 
 getPreviousVersion() {
     local previous_version=$(git tag | sort -t "." -k1,1n -k2,2n -k3,3n | tail -n 1);
